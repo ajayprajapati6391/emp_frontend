@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axois": "^0.0.1-security",
+    "axios": "^1.18.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "lucide-react": "^1.25.0",
