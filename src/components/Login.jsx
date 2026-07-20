@@ -24,8 +24,10 @@ const Login = () => {
                 "https://emp-backend-navy.vercel.app/api/adminlogin",
                 user,{withCredentials:true}
             );
-            navigate('/employee')
-            alert(response.data.message)
+            console.log(response.data);
+            localStorage.setItem("username",response.data.name);
+            navigate('/dashboard')
+
         } catch (err) {
             console.log(err);
             alert(err.response?.data?.message || err.message);
@@ -118,10 +120,6 @@ const Login = () => {
                             </form>
                         </div>
                     </div>
-
-                    <p className="text-center text-white mt-3">
-                        © 2026 Employee Management System
-                    </p>
                 </div>
             </div>
         </div>

@@ -2,12 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { notify } from "../utils";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const EmployeeTable = ({
     employees,
     pagination = {},
     fetchEmployees,
-    handleUpdateEmployee,
 }) => {
     const headers = [
         "Name",
@@ -19,7 +18,8 @@ const EmployeeTable = ({
         "Actions",
         " View Profile",
     ];
-
+    
+    const navigate = useNavigate();
     const { currentPage, totalPage } = pagination;
 
     const handleNextPage = () => {
@@ -37,6 +37,10 @@ const EmployeeTable = ({
     const handlePagination = (page) => {
         fetchEmployees("", page, 5);
     };
+
+    const handleUpdateEmployee = (id) => {
+        navigate(`/add-employee/${id}`);
+    }
 
     const handleDeleteEmployee = async (id) => {
         try {
@@ -77,7 +81,7 @@ const EmployeeTable = ({
                 <i
                     className="bi bi-pencil-fill text-warning me-3"
                     role="button"
-                    onClick={() => handleUpdateEmployee(employee)}
+                    onClick={() => handleUpdateEmployee(employee._id)}
                 ></i>
 
                 <i
@@ -145,7 +149,7 @@ const EmployeeTable = ({
                                 <div className="d-flex justify-content-end gap-2">
                                     <button
                                         className="btn btn-warning btn-sm"
-                                        onClick={() => handleUpdateEmployee(employee)}
+                                        onClick={() => handleUpdateEmployee(employee._id)}
                                     >
                                         <i className="bi bi-pencil-fill"></i>
                                     </button>

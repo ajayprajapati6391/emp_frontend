@@ -4,10 +4,9 @@ import AddEmployee from './AddEmployee'
 import EmployeeTable from './EmployeeTable'
 import { ToastContainer } from 'react-toastify';
 import { notify } from '../utils';
-import Logout from './Logout';
+import { Link } from 'react-router-dom';
 
 const EmployeeManagementApp = () => {
-  const [showModal, setShowModal] = useState(false);
   const [employeeObj, setEmployeeObj] = useState(null)
   const [employeesData, setEmployeesData] = useState({
     employees: [],
@@ -42,7 +41,6 @@ const EmployeeManagementApp = () => {
 
   const handleUpdateEmployee = async (emp) => {
     setEmployeeObj(emp);
-    setShowModal(true);
   }
 
   return (
@@ -64,9 +62,9 @@ const EmployeeManagementApp = () => {
                 <div className="col-4 col-md-2">
                   <button
                     className="btn btn-primary w-100"
-                    onClick={() => setShowModal(true)}
+          
                   >
-                    Add
+                    <Link to="/add-employee" className='text-decoration-none text-white'>Add</Link>
                   </button>
                 </div>
 
@@ -91,18 +89,8 @@ const EmployeeManagementApp = () => {
                   handleUpdateEmployee={handleUpdateEmployee}
                 />
               </div>
-
             </div>
           </div>
-
-          {/* Add Employee Modal */}
-          <AddEmployee
-            fetchEmployees={fetchEmployees}
-            showModal={showModal}
-            setShowModal={setShowModal}
-            employeeObj={employeeObj}
-          />
-
         </div>
       </div>
 
@@ -111,7 +99,6 @@ const EmployeeManagementApp = () => {
         autoClose={3000}
         hideProgressBar={false}
       />
-      <Logout />
     </div>
   );
 }
