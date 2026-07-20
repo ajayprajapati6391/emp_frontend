@@ -17,6 +17,7 @@ const EmployeeTable = ({
         "Salary",
         "Join Date",
         "Actions",
+        " View Profile",
     ];
 
     const { currentPage, totalPage } = pagination;
@@ -46,7 +47,7 @@ const EmployeeTable = ({
             if (!isConfirmed) return;
 
             const response = await axios.delete(
-                `https://emp-backend-navy.vercel.app/api/employees/${id}`,{withCredentials:true}
+                `https://emp-backend-navy.vercel.app/api/employees/${id}`, { withCredentials: true }
             );
 
             const { success, message } = response.data;
@@ -66,14 +67,7 @@ const EmployeeTable = ({
 
     const TableRow = ({ employee }) => (
         <tr>
-            <td>
-                <Link
-                    to={`/employee/${employee._id}`}
-                    className="text-decoration-none"
-                >
-                    {employee.name}
-                </Link>
-            </td>
+            <td>{employee.name}</td>
             <td>{employee.email}</td>
             <td>{employee.phone}</td>
             <td>{employee.department}</td>
@@ -91,6 +85,16 @@ const EmployeeTable = ({
                     role="button"
                     onClick={() => handleDeleteEmployee(employee._id)}
                 ></i>
+            </td>
+            <td>
+                <button className="btn btn-primary btn-sm">
+                    <Link
+                        to={`/employee/${employee._id}`}
+                        className="text-decoration-none text-white"
+                    >
+                        View
+                    </Link>
+                </button>
             </td>
         </tr>
     );
@@ -113,17 +117,10 @@ const EmployeeTable = ({
                         <div className="card shadow-sm mb-3" key={employee._id}>
                             <div className="card-body">
 
-                                <h5 className="card-title text-primary">
-                                    <Link
-                                        to={`/employee/${employee._id}`}
-                                        className="text-decoration-none text-primary fw-bold"
-                                    >
-                                        {employee.name}
-                                    </Link>
-                                </h5>
-
+                                <p className="mb-2">
+                                    <strong>Name:</strong> {employee.name}
+                                </p>
                                 <hr />
-
                                 <p className="mb-2">
                                     <strong>Email:</strong> {employee.email}
                                 </p>
@@ -145,22 +142,29 @@ const EmployeeTable = ({
                                     {new Date(employee.createdAt).toLocaleDateString()}
                                 </p>
 
-                                <div className="d-flex justify-content-end">
+                                <div className="d-flex justify-content-end gap-2">
                                     <button
-                                        className="btn btn-sm btn-warning me-2"
+                                        className="btn btn-warning btn-sm"
                                         onClick={() => handleUpdateEmployee(employee)}
                                     >
                                         <i className="bi bi-pencil-fill"></i>
                                     </button>
 
                                     <button
-                                        className="btn btn-sm btn-danger"
+                                        className="btn btn-danger btn-sm"
                                         onClick={() => handleDeleteEmployee(employee._id)}
                                     >
                                         <i className="bi bi-trash-fill"></i>
                                     </button>
-                                </div>
 
+                                    <Link
+                                        to={`/employee/${employee._id}`}
+                                        className="btn btn-primary btn-sm"
+                                    >
+                                        <i className="bi bi-eye-fill me-1"></i>
+                                        View
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     ))
@@ -215,8 +219,8 @@ const EmployeeTable = ({
                         <button
                             key={page}
                             className={`btn btn-sm me-2 mb-2 ${currentPage === page
-                                    ? "btn-primary"
-                                    : "btn-outline-primary"
+                                ? "btn-primary"
+                                : "btn-outline-primary"
                                 }`}
                             onClick={() => handlePagination(page)}
                         >
