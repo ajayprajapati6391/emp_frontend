@@ -36,7 +36,7 @@ const Login = () => {
 
     return (
         <div
-            className="container-fluid vh-100 d-flex align-items-center justify-content-center"
+            className="container-fluid p-3 d-flex align-items-center justify-content-center"
             style={{
                 background:
                     "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
