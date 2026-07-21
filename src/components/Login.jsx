@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import axios from "axios";
 import { notify } from "../utils";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../components/Context";
 const Login = () => {
     const navigate = useNavigate();
+    const { setUsername } = useContext(Context);
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -22,12 +24,10 @@ const Login = () => {
         try {
             const response = await axios.post(
                 "https://emp-backend-navy.vercel.app/api/adminlogin",
-                user,{withCredentials:true}
+                user, { withCredentials: true }
             );
-            console.log(response.data);
-            localStorage.setItem("username",response.data.name);
+            setUsername(response?.data?.data?.name)
             navigate('/dashboard')
-
         } catch (err) {
             console.log(err);
             alert(err.response?.data?.message || err.message);

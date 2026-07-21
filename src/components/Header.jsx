@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState ,useContext} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Context } from "../components/Context";
 import axios from "axios";
 import { notify } from "../utils";
 
 const Header = () => {
     const navigate = useNavigate();
-
+    const { username,setUsername } = useContext(Context);
     const handleLogout = async () => {
         try {
             const response = await axios.get(
@@ -16,7 +17,8 @@ const Header = () => {
             );
 
             if (response.data.success) {
-                notify("success", response.data.message);
+                setUsername('login')
+                notify("success", response?.data?.message);
                 navigate("/login");
             }
         } catch (error) {
@@ -60,11 +62,9 @@ const Header = () => {
                             </Link>
                         </li>
 
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile">
+                        <li className="nav-item nav-link">
                                 <i className="bi bi-person-circle me-1"></i>
-                                Profile
-                            </Link>
+                            {username}
                         </li>
 
                         <li className="nav-item ms-lg-3 mt-2 mt-lg-0">

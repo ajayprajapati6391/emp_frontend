@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 const Dashboard = () => {
-    const token = document.cookie.includes("token");
+    const username = sessionStorage.getItem("username");
     return (
         <div className="container py-5">
 
