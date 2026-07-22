@@ -18,7 +18,7 @@ const EmployeeTable = ({
         "Actions",
         " View Profile",
     ];
-    
+
     const navigate = useNavigate();
     const { currentPage, totalPage } = pagination;
 

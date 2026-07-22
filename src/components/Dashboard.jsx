@@ -1,7 +1,8 @@
-import React from "react";
+import React ,{useState}from "react";
 import { Link } from "react-router-dom";
 const Dashboard = () => {
     const username = sessionStorage.getItem("username");
+    const [department, setDepartment] = useState("");
     return (
         <div className="container py-5">
 
@@ -26,7 +27,7 @@ const Dashboard = () => {
                                 to="/employee"
                                 className="btn btn-primary"
                             >
-                                View Employees
+                                View All Employees
                             </Link>
                         </div>
                     </div>
@@ -54,20 +55,34 @@ const Dashboard = () => {
                 <div className="col-md-6 col-lg-4">
                     <div className="card shadow border-0 h-100">
                         <div className="card-body text-center">
-                            <i className="bi bi-person-circle fs-1 text-warning"></i>
-                            <h4 className="mt-3">My Profile</h4>
-                            <p>View your account details.</p>
+                            <i className="bi bi-diagram-3-fill fs-1 text-primary"></i>
+
+                            <h4 className="mt-3">Department Wise Employees</h4>
+
+                            <p>View employees grouped by department.</p>
+                            <p>Select Department</p>
+                            <select
+                                className="form-select"
+                                value={department}
+                                onChange={(e) => setDepartment(e.target.value)}
+                            >
+                                <option value="">Select Department</option>
+                                <option value="HR">HR</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Coding">Coding</option>
+                                <option value="Designing">Designing</option>
+                                <option value="Testing">Testing</option>
+                            </select>
 
                             <Link
-                                to="/profile"
-                                className="btn btn-warning text-dark"
+                                to={`/department-wise-employee/${department}`}
+                                className={`btn btn-primary mt-3 ${!department ? "disabled" : ""}`}
                             >
-                                Profile
+                                View Employees
                             </Link>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>

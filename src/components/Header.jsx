@@ -1,12 +1,12 @@
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../components/Context";
 import axios from "axios";
 import { notify } from "../utils";
 
 const Header = () => {
     const navigate = useNavigate();
-    const { username,setUsername } = useContext(Context);
+    const [username, setUsername] = useState()
+    const user = sessionStorage.getItem("username");
     const handleLogout = async () => {
         try {
             const response = await axios.get(
@@ -17,8 +17,7 @@ const Header = () => {
             );
 
             if (response.data.success) {
-                setUsername('login')
-                notify("success", response?.data?.message);
+                sessionStorage.clear();
                 navigate("/login");
             }
         } catch (error) {
@@ -26,6 +25,9 @@ const Header = () => {
             notify("error", "Logout Failed");
         }
     };
+    useEffect(()=>{
+        setUsername(sessionStorage.getItem("username") || 'profile')
+    })
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
@@ -55,6 +57,13 @@ const Header = () => {
                             </Link>
                         </li>
 
+                        {user && <li className="nav-item">
+                            <Link className="nav-link" to="/dashboard">
+                                <i className="bi bi-grid-fill"></i>
+                                Dashboard
+                            </Link>
+                        </li>}
+
                         <li className="nav-item">
                             <Link className="nav-link" to="/about">
                                 <i className="bi bi-info-circle-fill me-1"></i>
@@ -63,18 +72,25 @@ const Header = () => {
                         </li>
 
                         <li className="nav-item nav-link">
-                                <i className="bi bi-person-circle me-1"></i>
+                            <i className="bi bi-person-circle me-1"></i>
                             {username}
                         </li>
 
                         <li className="nav-item ms-lg-3 mt-2 mt-lg-0">
-                            <button
-                                className="btn btn-danger btn-sm"
-                                onClick={handleLogout}
-                            >
-                                <i className="bi bi-box-arrow-right me-1"></i>
-                                Logout
-                            </button>
+                            {user ? (
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={handleLogout}
+                                >
+                                    <i className="bi bi-box-arrow-right me-1"></i>
+                                    Logout
+                                </button>
+                            ) : (
+                                <Link to="/login" className="btn btn-success btn-sm">
+                                    <i className="bi bi-box-arrow-in-right me-1"></i>
+                                    Login
+                                </Link>
+                            )}
                         </li>
 
                     </ul>

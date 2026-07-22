@@ -21,7 +21,7 @@ const EmployeeManagementApp = () => {
   const fetchEmployees = async (search = '', page = 1, limit = 5) => {
     try {
       const response = await axios.get(`https://emp-backend-navy.vercel.app/api/employees?page=${page}&limit=${limit}&search=${search}`, { withCredentials: true })
-      setEmployeesData(response.data.data);
+      setEmployeesData(response?.data?.data);
     } catch (err) {
       notify("error", err.message);
       console.log('Error', err);
@@ -62,7 +62,7 @@ const EmployeeManagementApp = () => {
                 <div className="col-4 col-md-2">
                   <button
                     className="btn btn-primary w-100"
-          
+
                   >
                     <Link to="/add-employee" className='text-decoration-none text-white'>Add</Link>
                   </button>

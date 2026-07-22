@@ -34,10 +34,10 @@ const AddEmployee = () => {
         try {
             const formData = new FormData();
 
-            formData.append("name", employee.name);
-            formData.append("email", employee.email);
+            formData.append("name", employee.name.trim());
+            formData.append("email", employee.email.trim());
             formData.append("phone", employee.phone);
-            formData.append("department", employee.department);
+            formData.append("department", employee.department.trim());
             formData.append("salary", employee.salary);
 
             if (employee.profileImage) {
