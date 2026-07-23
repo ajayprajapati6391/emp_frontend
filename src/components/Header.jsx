@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { notify } from "../utils";
 
-const Header = () => {
+const Header = ({ setToken }) => {
     const navigate = useNavigate();
     const [username, setUsername] = useState()
     const user = sessionStorage.getItem("username");
@@ -18,6 +18,7 @@ const Header = () => {
 
             if (response.data.success) {
                 sessionStorage.clear();
+                setToken(null)
                 navigate("/login");
             }
         } catch (error) {
@@ -25,7 +26,7 @@ const Header = () => {
             notify("error", "Logout Failed");
         }
     };
-    useEffect(()=>{
+    useEffect(() => {
         setUsername(sessionStorage.getItem("username") || 'profile')
     })
 

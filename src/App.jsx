@@ -1,42 +1,85 @@
-import React, { useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import EmployeeManagementApp from './components/EmployeeManagementApp'
-import EmployeeDetails from './components/EmployeeDetails'
-import Login from './components/Login'
-import Register from './components/Register'
-import Home from './components/Home'
-import About from './components/About'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Dashboard from './components/Dashboard'
-import AddEmployee from './components/AddEmployee'
-import Department from './components/Department'
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import EmployeeManagementApp from "./components/EmployeeManagementApp";
+import EmployeeDetails from "./components/EmployeeDetails";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
+import About from "./components/About";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Dashboard from "./components/Dashboard";
+import AddEmployee from "./components/AddEmployee";
+import Department from "./components/Department";
+
 const App = () => {
-    const user = sessionStorage.getItem('username')
-    const navigate = useNavigate();
-    const withoutLogin = () => {
-        navigate('/login')
-    }
+    const [token, setToken] = useState(null);
+    useEffect(() => {
+        setToken(sessionStorage.getItem('username'))
+    }, [])
     return (
         <div>
-            <Header />
+            <Header setToken={setToken} />
             <Routes>
+                {/* Public Routes */}
                 <Route path="/" element={<Home />} />
+                <Route path="/register123" element={<Register />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/login" element={<Login />} />
-                {user ? (<>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/department-wise-employee/:department" element={<Department />} />
-                    <Route path="/add-employee/:id" element={<AddEmployee />} />
-                    <Route path="/add-employee/" element={<AddEmployee />} />
-                    <Route path="/register123" element={<Register />} />
-                    <Route path="/employee" element={<EmployeeManagementApp />} />
-                    <Route path="/employee/:id" element={<EmployeeDetails />} />
-                </>) : withoutLogin()}
+                <Route
+                    path="/login"
+                    element={token ? <Navigate to="/dashboard" replace /> : <Login setToken={setToken} />}
+                />
+
+                {/* Protected Routes */}
+                <Route
+                    path="/dashboard"
+                    element={token ? <Dashboard /> : <Navigate to="/login" replace />}
+                />
+
+                <Route
+                    path="/department-wise-employee/:department"
+                    element={token ? <Department /> : <Navigate to="/login" replace />}
+                />
+
+                <Route
+                    path="/add-employee"
+                    element={token ? <AddEmployee /> : <Navigate to="/login" replace />}
+                />
+
+                <Route
+                    path="/add-employee/:id"
+                    element={token ? <AddEmployee /> : <Navigate to="/login" replace />}
+                />
+
+                <Route
+                    path="/employee"
+                    element={
+                        token ? (
+                            <EmployeeManagementApp />
+                        ) : (
+                            <Navigate to="/login" replace />
+                        )
+                    }
+                />
+
+                <Route
+                    path="/employee/:id"
+                    element={
+                        token ? <EmployeeDetails /> : <Navigate to="/login" replace />
+                    }
+                />
+
+                {/* Invalid Route */}
+                <Route
+                    path="*"
+                    element={<Navigate to={token ? "/dashboard" : "/login"} replace />}
+                />
             </Routes>
+
             <Footer />
         </div>
-    )
-}
+    );
+};
 
-export default App
+export default App;
